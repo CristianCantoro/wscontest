@@ -12,11 +12,21 @@ import sys
 import os
 import hashlib
 
+# BASEDIR is public_html/wscontest/
+PWD_FILE = os.path.realpath(
+               os.path.join('..',
+		            '..',
+                            'wscontest',
+                            'wscontest_config.txt'
+                           )
+               )
+
 Contest = Bottle()
 
 @Contest.get('/')
 def index_get():
-  return static_file('index.html', root='static')
+    return static_file('index.html', root='static')
+
 
 @Contest.post('/')
 def index_post():
@@ -25,14 +35,14 @@ def index_post():
     revid = request.forms.get('revid')
 
     PASSWORD = None
-    with open('../wscontest_config.txt', 'r+') as f:
+    with open(PWD_FILE, 'r+') as f:
         PASSWORD = f.read().strip('\n')
 
     if hashlib.sha1(password).hexdigest() == PASSWORD or password == 'test':
         from wikisource_contest import get_participants_table, choose_winner
         try:
             table = get_participants_table(
-                lang='it', 
+                lang='it',
                 page='Wikisource:Decimo_compleanno_di_Wikisource/Scrutini',
                 section=1,
                 revid=revid
@@ -58,7 +68,7 @@ def index_post():
             from wikisource_contest import write_results
             write_results(winner2,
                           winner3,
-                          pagename='User:CristianCantoro',
+                          pagename='Wikisource:Decimo_compleanno_di_Wikisource/Scrutini',
                           summary='Inserisco i vincitori'
                          )
             return template('winners', winner2=winner2, winner3=winner3)
@@ -69,14 +79,16 @@ def index_post():
     else:
         return template('error_password', message="Password errata")
 
+
 @Contest.get('/change-password')
 def change_password_form():
-  return static_file('change-password.html', root='static')    
+    return static_file('change-password.html', root='static')
+
 
 @Contest.post('/change-password')
 def change_password():
 
-    PASSWORD = None 
+    PASSWORD = None
     with open('../wscontest_config.txt', 'r+') as f:
         PASSWORD = f.read().strip('\n')
 
@@ -104,25 +116,31 @@ def change_password():
     else:
         return template('error_password', message="Password errata")
 
+
 @Contest.route('/css/<css_file>')
 def serve_css(css_file):
-  return static_file(css_file, root='./css')
+    return static_file(css_file, root='css')
+
 
 @Contest.route('/images/<filepath:path>')
 def serve_images(filepath):
-  return static_file(filepath, root='./images')
+    return static_file(filepath, root='images')
+
 
 @Contest.route('/favicon.ico')
 def serve_favicon():
-  return static_file('wikisource.ico', root='.')
+    return static_file('wikisource.ico', root='.')
+
 
 @Contest.route('/js/<filepath:path>')
 def serve_js(filepath):
-  return static_file(filepath, root='./js')
+    return static_file(filepath, root='js')
+
 
 @Contest.get('/github')
 def github():
-  return redirect("http://github.com/CristianCantoro/")
+    return redirect("http://github.com/CristianCantoro/wscontest")
+
 
 if __name__ == '__main__':
-    run(Contest, host='localhost', port=40000, debug=True,reloader=True)
+    run(Contest, host='localhost', port=40000, debug=True, reloader=True)
