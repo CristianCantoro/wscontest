@@ -1,0 +1,190 @@
+/* @group Units */
+.unit:after, .group:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+.unit, .group { display: inline-block; }
+* html .unit, * html .group { height: 1%; }
+.unit, .group { display: block; }
+/* @end */
+
+/* @group Skiplinks */
+#skip-links {
+    /* Hide, but not from screen-readers */ 
+    position: absolute !important;
+    clip: rect(1px 1px 1px 1px);
+    clip: rect(1px, 1px, 1px, 1px);
+}
+/* @end */
+body {
+    color: #42413b;
+    background: #ffffff;
+    font-size: 100%; /* 14px */
+    line-height: 1.57; /* 22px */
+    -webkit-font-smoothing: antialiased;
+}
+pre {
+    border: none;
+}
+h1,h2,h3 {
+    color: #3E3D38;
+    font-weight: bold;
+    letter-spacing: -1px;
+}
+h4,h5,h6,h1 strong,h2 strong,h3 strong,h4 strong,h5 strong,h6 strong {
+    color: #3E3D38;
+}
+#container {
+    width: 90%;
+    margin: auto;
+    background: #ffffff;
+}
+a { 
+    text-decoration: none;
+    -webkit-transition: color 0.1s linear;
+}
+a:visited {
+    color: #c93968;
+}
+a:hover {
+    color: #E60000;
+}
+a:active {
+    color: #7979a7;
+}
+#header {
+    width: 100%;
+    padding-bottom: 1.5em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    float: left;
+    background: #fff;
+}
+#header h1 {
+    display: block;
+    margin: auto;
+    padding:auto;
+    width: 80%;
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: 2.5em;
+    text-align: center;
+}
+#get-box {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+#github-ribbon-left {
+  position: absolute; 
+  float: left;
+}
+
+#primary-content {
+    margin: auto; 
+    text-align: center;
+    width: 80%;
+}
+
+form {
+    padding-right: 33%;
+    text-align: right;
+}
+
+input {
+    font-family: inherit;
+}      
+
+input.text:focus {
+  outline: none;
+}
+
+input.text {
+    background: white;
+    border: 1px solid #cccccc;
+    border-bottom-color: #999999;
+    border-right-color: #999999;
+    color: black;
+    font: 18px arial, sans-serif bold;
+    height: 25px;
+    margin: 0;
+    padding: 5px 8px 0 6px;
+    vertical-align: top;
+}
+
+input.text:focus {
+  outline: none;
+}
+
+input#search {
+  border: medium none;
+  color: black;
+  cursor: pointer;
+  font: 15px arial, sans-serif;
+  height: 30px;
+  margin: 0;
+  outline: 0 none;
+  vertical-align: top;
+}
+
+input:active, input.active {
+  background-image: none;
+  background-color: #cccccc;
+}
+
+.button_wrapper {
+  border-bottom: 1px solid #e7e7e7;
+  border-right: 1px solid #e7e7e7;
+  display: inline-block;
+  margin: 3px 0 4px 4px;
+}
+
+.button_wrapper .inner {
+  background: none repeat scroll 0 0 #eeeeee;
+  border-color: #cccccc #999999 #999999 #cccccc;
+  border-width: 1px;
+  display: block;
+  height: 30px;
+}
+
+#footer {
+    background: #fff;
+    width: 100%;
+    font-size: 80%; /* 12px */
+    border-top: 1px solid #D6D6D6;
+    padding: 1em 0;
+    bottom: 0;
+    float: left;
+}
+
+#license-text {
+    display: none;
+    background-color: #eeeeee;
+    padding: 10px 5px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+#winners {
+    padding: 5px 30px;
+    width: auto;
+    border: none;
+    background-color: #24E724;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+#error {
+    padding: 5px 30px;
+    width: auto;
+    border: none;
+    background-color: #FF0033;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+#test {
+    padding: 5px 30px;
+    width: auto;
+    border: none;
+    background-color: #FEE724;
+    border-radius: 4px;
+    display: inline-block;
+}
