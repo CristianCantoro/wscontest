@@ -6,29 +6,24 @@
 # Distributed under the terms of the MIT license.
 
 __version__ = '$Id$'
-#
 
 import re
-
 import pywikibot
 from pywikibot import pagegenerators
 from pywikibot import i18n
 
-# This is required for the text that is shown when you run this script
-# with the parameter -help.
 docuReplacements = {
     '&params;': pagegenerators.parameterHelp
 }
 
-TEMPLATE = """
+TEMPLATE = u"""
+{{Utente:CristianCantoro/Vincitore1|%s}}
 {{Utente:CristianCantoro/Vincitore2|%s}}
 {{Utente:CristianCantoro/Vincitore3|%s}}
 """
 
+
 class BasicBot(object):
-    # Edit summary message that should be used is placed on /i18n subdirectory.
-    # The file containing these messages should have the same name as the caller
-    # script (i.e. basic.py in this case)
 
     def __init__(self, summary):
         # init constants
@@ -41,8 +36,7 @@ class BasicBot(object):
         else:
             self.summary = i18n.twtranslate(self.site, 'basic-changing')
 
-
-    def run(self, page, winner2, winner3):
+    def run(self, page, winner1, winner2, winner3):
         """
         Loads the given page, does some changes, and saves it.
         """
@@ -50,7 +44,7 @@ class BasicBot(object):
         if not text:
             return
 
-        new_text = TEMPLATE %(winner2, winner3)
+        new_text = TEMPLATE % (winner1, winner2, winner3)
 
         text = text.replace('<!--substme-->', new_text)
 
@@ -77,7 +71,6 @@ class BasicBot(object):
     def save(self, text, page, comment=None, **kwargs):
         if text != page.get():
             try:
-                # Save the page
                 page.put(text, comment=comment or self.comment, **kwargs)
             except pywikibot.LockedPage:
                 pywikibot.output(u"Page %s is locked; skipping."
@@ -94,16 +87,17 @@ class BasicBot(object):
                 return True
         return False
 
+
 def main(pagename='Utente:CristianCantoro'):
     sito = pywikibot.Site('it', 'wikisource')
     page = pywikibot.Page(sito, pagename)
-    
+
     bot = BasicBot('Test')
 
     bot.run(page=page,
             winner2='Paperino',
             winner3='Topolino'
-           )
+            )
 
 
 if __name__ == "__main__":

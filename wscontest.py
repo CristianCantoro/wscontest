@@ -39,7 +39,9 @@ def index_post():
         PASSWORD = f.read().strip('\n')
 
     if hashlib.sha1(password).hexdigest() == PASSWORD or password == 'test':
-        from wikisource_contest import get_participants_table, choose_winner
+        from wikisource_contest import get_participants_table
+        from wikisource_contest import choose_first, choose_winner
+
         try:
             table = get_participants_table(
                 lang='it',
@@ -50,29 +52,39 @@ def index_post():
         except ValueError:
             return template('error_table', revid=revid)
 
+        winner1 = None
         winner2 = None
         winner3 = None
         try:
-            winner2 = choose_winner(table)
-            winner3 = choose_winner(table, [winner2])
+            winner1 = choose_first(table)
+            winner2 = choose_winner(table, [winner1])
+            winner3 = choose_winner(table, [winner1, winner2])
+
+            assert winner1 is not None, "winner1 is None"
             assert winner2 is not None, "winner2 is None"
             assert winner3 is not None, "winner3 is None"
         except Exception as e:
             return template('error_winners',
+                            winner1=winner1,
                             winner2=winner2,
                             winner3=winner3,
                             e=repr(e)
                             )
 
         if password != 'test':
-            from wikisource_contest import write_results
-            write_results(winner2,
-                          winner3,
-                          pagename='Wikisource:'
-                                   'Decimo_compleanno_di_Wikisource/Scrutini',
-                          summary='Inserisco i vincitori'
-                          )
-            return template('winners', winner2=winner2, winner3=winner3)
+            # from wikisource_contest import write_results
+            # write_results(winner2,
+            #               winner3,
+            #               pagename='Wikisource:'
+            #                        'Decimo_compleanno_di_Wikisource/'
+            #                        'Scrutini',
+            #               summary='Inserisco i vincitori'
+            #               )
+            return template('winners',
+                            winner1=winner1,
+                            winner2=winner2,
+                            winner3=winner3
+                            )
 
         else:
             return template('test')
