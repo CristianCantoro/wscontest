@@ -14,14 +14,14 @@ import hashlib
 
 # BASEDIR is public_html/wscontest/
 PWD_FILE = os.path.realpath(
-               os.path.join('..',
-		            '..',
-                            'wscontest',
-                            'wscontest_config.txt'
-                           )
-               )
+    os.path.join('..',
+                 '..',
+                 'wscontest',
+                 'wscontest_config.txt'
+                 ))
 
 Contest = Bottle()
+
 
 @Contest.get('/')
 def index_get():
@@ -59,18 +59,19 @@ def index_post():
             assert winner3 is not None, "winner3 is None"
         except Exception as e:
             return template('error_winners',
-                             winner2=winner2,
-                             winner3=winner3,
-                             e=repr(e)
+                            winner2=winner2,
+                            winner3=winner3,
+                            e=repr(e)
                             )
 
         if password != 'test':
             from wikisource_contest import write_results
             write_results(winner2,
                           winner3,
-                          pagename='Wikisource:Decimo_compleanno_di_Wikisource/Scrutini',
+                          pagename='Wikisource:'
+                                   'Decimo_compleanno_di_Wikisource/Scrutini',
                           summary='Inserisco i vincitori'
-                         )
+                          )
             return template('winners', winner2=winner2, winner3=winner3)
 
         else:
@@ -100,13 +101,13 @@ def change_password():
         return template('error_password',
                         message="La nuova password e la sua ripetizione "
                                 "non coincidono."
-                       )
+                        )
 
     if old == new:
         return template('error_password',
                         message="La nuova password è uguale a quella "
                                 "precedente."
-                       )
+                        )
 
     if hashlib.sha1(old).hexdigest() == PASSWORD:
         with open(PWD_FILE, 'w+') as out:
@@ -143,4 +144,11 @@ def github():
 
 
 if __name__ == '__main__':
-    run(Contest, host='localhost', port=40000, debug=True, reloader=True)
+    app = Bottle()
+
+    @app.get('/')
+    @app.get('/wscontest')
+    def app_index():
+        return redirect('/wscontest/')
+    app.mount(prefix='/wscontest/', app=Contest)
+    run(app, host='localhost', port=40000, debug=True, reloader=True)
