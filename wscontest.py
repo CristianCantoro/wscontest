@@ -89,7 +89,7 @@ def change_password_form():
 def change_password():
 
     PASSWORD = None
-    with open('../wscontest_config.txt', 'r+') as f:
+    with open(PWD_FILE, 'r+') as f:
         PASSWORD = f.read().strip('\n')
 
     old = request.forms.get('old')
@@ -109,7 +109,7 @@ def change_password():
                        )
 
     if hashlib.sha1(old).hexdigest() == PASSWORD:
-        with open('../wscontest_config.txt', 'w+') as out:
+        with open(PWD_FILE, 'w+') as out:
             out.write(hashlib.sha1(new).hexdigest())
 
         return template('success')
