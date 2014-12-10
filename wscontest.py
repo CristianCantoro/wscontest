@@ -25,6 +25,15 @@ import sys
 import os
 import hashlib
 
+# BASEDIR is public_html/wscontest/
+PASSWORD_FILE = os.path.realpath(
+    os.path.join('..',
+                 '..',
+                 'wscontest',
+                 'wscontest_config.txt'
+                 ))
+Contest.password_file = PASSWORD_FILE
+
 Contest = Bottle()
 
 
@@ -168,13 +177,8 @@ if __name__ == '__main__':
     arguments = docopt(__doc__, version='Wikisouce Contest 2.0')
 
     # parse command line arguments
-    # BASEDIR is public_html/wscontest/
     password_file = os.path.realpath(
-        os.path.join('..',
-                     '..',
-                     'wscontest',
-                     'wscontest_config.txt'
-                     ))
+        os.path.join('wscontest_config.txt'))
     if arguments['--password'] and arguments['FILE']:
         password_file = arguments['FILE']
 
