@@ -1,10 +1,23 @@
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
+"""Wikisource Contest Winner Extraction.
 
+Usage:
+  wikisource_contest.py [-l LANG] [-s SECTION] PAGE REVID
+  wikisource_contest.py (-h | --help)
+  wikisource_contest.py --version
+
+Options:
+  -h --help     Show this screen.
+  --version     Show version.
+"""
+
+from docopt import docopt
+import pywikibot
 import re
 import random
 import requests
 import urllib
-import pywikibot
 from bot import BasicBot
 
 REGEX = "\[\[User:.*?\|(.*?)\]\]\s*\|\| (\d+)"
@@ -92,11 +105,30 @@ def write_results(winner1,
 
 
 if __name__ == '__main__':
+    # Run it with:
+    # python wikisource_contest.py \
+    #   -l it -s 1 \
+    #   'Wikisource:Decimo_compleanno_di_Wikisource/Scrutini' 1354532
+
+    arguments = docopt(__doc__, version='Wikisouce Contest 2.0')
+
+    # parse command line arguments
+    page = arguments['PAGE']
+    revid = int(arguments['REVID'])
+
+    lang = 'it'
+    if arguments['-l'] and arguments['LANG']:
+        lang = arguments['LANG']
+
+    section = 0
+    if arguments['-s'] and arguments['SECTION']:
+        section = int(arguments['SECTION'])
+
     table = get_participants_table(
-        lang='it',
-        page='Wikisource:Decimo_compleanno_di_Wikisource/Scrutini',
-        section=1,
-        revid=1354532)
+        lang=lang,
+        page=page,
+        section=section,
+        revid=revid)
 
     winner1 = choose_first(table)
     print 'winner1: ', winner1

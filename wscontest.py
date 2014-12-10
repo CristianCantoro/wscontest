@@ -1,5 +1,17 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
+"""Wikisource Contest Winner Extraction Application.
+
+Usage:
+  wikisource_contest.py
+  wikisource_contest.py --password FILE
+  wikisource_contest.py (-h | --help)
+  wikisource_contest.py --version
+
+Options:
+  -h --help     Show this screen.
+  --version     Show version.
+"""
 
 from bottle import Bottle
 from bottle import run
@@ -7,18 +19,11 @@ from bottle import request
 from bottle import response
 from bottle import redirect
 from bottle import static_file, template
+from docopt import docopt
 from urlparse import urlparse, parse_qs
 import sys
 import os
 import hashlib
-
-# BASEDIR is public_html/wscontest/
-PWD_FILE = os.path.realpath(
-    os.path.join('..',
-                 '..',
-                 'wscontest',
-                 'wscontest_config.txt'
-                 ))
 
 Contest = Bottle()
 
@@ -33,9 +38,13 @@ def index_post():
 
     password = request.forms.get('password')
     revid = request.forms.get('revid')
+    page = request.forms.get('page')
+    lang = request.forms.get('lang', 'it')
+    section = request.forms.get('section', 0)
 
     PASSWORD = None
-    with open(PWD_FILE, 'r+') as f:
+    print Contest.password_file
+    with open(Contest.password_file, 'r+') as f:
         PASSWORD = f.read().strip('\n')
 
     if hashlib.sha1(password).hexdigest() == PASSWORD or password == 'test':
@@ -44,9 +53,9 @@ def index_post():
 
         try:
             table = get_participants_table(
-                lang='it',
-                page='Wikisource:Decimo_compleanno_di_Wikisource/Scrutini',
-                section=1,
+                lang=lang,
+                page=page,
+                section=section,
                 revid=revid
             )
         except ValueError:
@@ -156,11 +165,28 @@ def github():
 
 
 if __name__ == '__main__':
+    arguments = docopt(__doc__, version='Wikisouce Contest 2.0')
+
+    # parse command line arguments
+    # BASEDIR is public_html/wscontest/
+    password_file = os.path.realpath(
+        os.path.join('..',
+                     '..',
+                     'wscontest',
+                     'wscontest_config.txt'
+                     ))
+    if arguments['--password'] and arguments['FILE']:
+        password_file = arguments['FILE']
+
+    # main app
     app = Bottle()
 
     @app.get('/')
     @app.get('/wscontest')
     def app_index():
         return redirect('/wscontest/')
+
+    Contest.password_file = password_file
+
     app.mount(prefix='/wscontest/', app=Contest)
     run(app, host='localhost', port=40000, debug=True, reloader=True)

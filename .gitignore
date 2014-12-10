@@ -1,4 +1,12 @@
+# Python scripts
 *.py[cod]
+
+# pywikibot internals
+apicache
+throttle.ctrl
+
+# config file
+wscontest_config.txt
 
 # C extensions
 *.so

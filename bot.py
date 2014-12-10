@@ -95,6 +95,7 @@ def main(pagename='Utente:CristianCantoro'):
     bot = BasicBot('Test')
 
     bot.run(page=page,
+            winner1='Pippo1',
             winner2='Paperino',
             winner3='Topolino'
             )
