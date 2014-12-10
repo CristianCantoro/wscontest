@@ -25,16 +25,17 @@ import sys
 import os
 import hashlib
 
+Contest = Bottle()
+
 # BASEDIR is public_html/wscontest/
 PASSWORD_FILE = os.path.realpath(
     os.path.join('..',
                  '..',
                  'wscontest',
+
                  'wscontest_config.txt'
                  ))
 Contest.password_file = PASSWORD_FILE
-
-Contest = Bottle()
 
 
 @Contest.get('/')
