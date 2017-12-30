@@ -20,7 +20,7 @@ import requests
 import urllib
 from bot import BasicBot
 
-REGEX = "\[\[User:.*?\|(.*?)\]\]\s*\|\| (\d+)"
+REGEX = "\[\[Utente:.*?\|(.*?)\]\]\s*\|\| (\d+)"
 
 
 def get_participants_table(lang, page, section, revid):

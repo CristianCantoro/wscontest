@@ -106,7 +106,7 @@ def index_post():
                             )
 
         else:
-            return template('test')
+            return template('test', winner1=winner1, winner2=winner2, winner3=winner3)
 
     else:
         return template('error_password', message="Password errata")
